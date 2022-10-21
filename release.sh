@@ -8,7 +8,6 @@ ARCHS=(
 set -e
 
 
-mkdir -p toolkit_tarballs
 # Download all necessary tarballs before calling into the docker containers.
 echo "Downloading environment tarballs"
 for ver in ${VERSIONS[@]}; do
@@ -43,6 +42,8 @@ for ver in ${VERSIONS[@]}; do
         if [ -d artifacts/ ]; then
             rm -rf artifacts/
         fi
+        
+        mkdir -p toolkit_tarballs
 
         docker run \
             --rm \
@@ -56,3 +57,14 @@ for ver in ${VERSIONS[@]}; do
         mv artifacts/WireGuard-*/* target/$ver/
     done
 done
+
+# Clean up artifact directory
+if [ -d artifacts/ ]; then
+    rm -rf artifacts/
+fi
+
+# Change permissions of the target directory to match the local user if called
+# using sudo
+if [ ! -z ${SUDO_USER+x} ]; then
+    chown "$SUDO_USER:$SUDO_USER" -R target/
+fi
