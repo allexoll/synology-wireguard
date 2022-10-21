@@ -2,16 +2,12 @@
 VERSIONS=(7.1)
 ARCHS=(
     "braswell"
-    "v1000"
+#    "v1000"
 )
 
 set -e
 
-# Check that we are running as root
-if [ `id -u` -ne 0 ]; then
-    echo "This script must be run as root"
-    exit 1
-fi
+
 mkdir -p toolkit_tarballs
 # Download all necessary tarballs before calling into the docker containers.
 echo "Downloading environment tarballs"
@@ -60,14 +56,3 @@ for ver in ${VERSIONS[@]}; do
         mv artifacts/WireGuard-*/* target/$ver/
     done
 done
-
-# Clean up artifact directory
-if [ -d artifacts/ ]; then
-    rm -rf artifacts/
-fi
-
-# Change permissions of the target directory to match the local user if called
-# using sudo
-if [ ! -z ${SUDO_USER+x} ]; then
-    chown "$SUDO_USER:$SUDO_USER" -R target/
-fi

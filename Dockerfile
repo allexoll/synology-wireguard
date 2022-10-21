@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM  --platform=arm64  ubuntu:latest
 
 VOLUME [ "/toolkit_tarballs" ]
 
