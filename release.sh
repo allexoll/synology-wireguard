@@ -7,7 +7,7 @@ ARCHS=(
 
 set -e
 
-
+mkdir -p toolkit_tarballs
 # Download all necessary tarballs before calling into the docker containers.
 echo "Downloading environment tarballs"
 for ver in ${VERSIONS[@]}; do
@@ -43,7 +43,7 @@ for ver in ${VERSIONS[@]}; do
             rm -rf artifacts/
         fi
         
-        mkdir -p toolkit_tarballs
+        mkdir -p artifacts
 
         docker run \
             --rm \
